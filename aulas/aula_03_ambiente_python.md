@@ -53,21 +53,20 @@ O **venv** cria uma "caixinha" separada para cada projeto. As bibliotecas instal
 Crie a pasta backend/ na raiz do projeto
 
 O venv fica dentro da pasta `backend/` porque é lá que está o código Python:
+Abra o terminal e troque do PowerShell para o Command Prompt
 
-Entre cd backend
+Entre com cd backend
 
 ```powershell
 python -m venv venv
 ```
-
-> O `--system-site-packages` permite que o venv enxergue os pacotes que já estão instalados no Python da máquina. Nessas máquinas do laboratório isso é necessário porque o `pip` do sistema e o `pip` do venv podem não se comunicar corretamente.
 
 ### Ativando o venv
 
 Você precisa ativar a caixinha antes de usar. **Faça isso toda vez que for trabalhar no projeto.**
 
 ```powershell
-.\backend\venv\Scripts\Activate.ps1
+.\venv\Scripts\Activate.ps1
 ```
 
 > Se aparecer erro de "política de execução", rode isso uma vez e confirme com `S`:
@@ -115,27 +114,27 @@ pip install fastapi uvicorn mysql-connector-python python-dotenv
 O arquivo `requirements.txt` fica dentro de `backend/` e lista tudo que o projeto precisa.
 
 ```powershell
-pip freeze > backend\requirements.txt
+pip freeze > requirements.txt
 ```
 
-> **Como usar depois:** quem clonar o projeto roda `pip install -r backend\requirements.txt` e já tem tudo instalado.
+> **Como usar depois:** quem clonar o projeto roda dentro da pasta backend `pip install -r requirements.txt` e já tem tudo instalado.
 
 ---
 
 ## Parte 4 — Salvando no GitHub
 
-Agora vamos registrar a instalação no histórico do projeto.
+Agora vamos registrar a instalação no seu repositório
 
-```powershell
-git add backend\requirements.txt
-git commit -m "adiciona dependências do projeto"
+`Lembrando que deve criar seu resitório sem o readme`
+
+
+```Command Prompt
+git remote set-url origin "caminho do seu repositorio"
+git add .
+git commit -m "criando estrutura basica"
 git push
 ```
-
-- `git add` → seleciona os arquivos que queremos salvar
-- `git commit` → cria um "ponto de salvamento" com uma mensagem
-- `git push` → envia para o GitHub
-
+no processo vai er que validar suas credenciais
 ---
 
 ## Estrutura do projeto até agora
