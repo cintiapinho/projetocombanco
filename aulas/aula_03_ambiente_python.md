@@ -22,7 +22,7 @@ Você vai ter todos os arquivos das aulas na sua máquina e poderá acompanhar o
 3. Copie o link que aparece (começa com `https://`)
 4. Abra o terminal e execute:
 
-```bash
+```powershell
 cd Desktop
 git clone https://github.com/usuario/estudio-tatuagem-api.git
 cd estudio-tatuagem-api
@@ -50,40 +50,40 @@ O **venv** cria uma "caixinha" separada para cada projeto. As bibliotecas instal
 
 ### Criando o venv
 
-No terminal, dentro da pasta do projeto:
+O venv fica dentro da pasta `backend/` porque é lá que está o código Python:
 
-```bash
-python -m venv venv
+```powershell
+C:\Python310\python.exe -m venv backend\venv --system-site-packages
 ```
 
-Isso cria uma pasta chamada `venv` com um Python isolado só para esse projeto.
+> O `--system-site-packages` permite que o venv enxergue os pacotes que já estão instalados no Python da máquina. Nessas máquinas do laboratório isso é necessário porque o `pip` do sistema e o `pip` do venv podem não se comunicar corretamente.
 
 ### Ativando o venv
 
 Você precisa ativar a caixinha antes de usar. **Faça isso toda vez que for trabalhar no projeto.**
 
-**Windows:**
-```bash
-venv\Scripts\activate
+```powershell
+.\backend\venv\Scripts\Activate.ps1
 ```
 
-**Mac/Linux:**
-```bash
-source venv/bin/activate
-```
+> Se aparecer erro de "política de execução", rode isso uma vez e confirme com `S`:
+> ```powershell
+> Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+> ```
+> Depois tente ativar de novo.
 
 Quando ativado, o terminal vai mostrar `(venv)` no início da linha:
 
 ```
-(venv) C:\Users\Aluno\Desktop\estudio-tatuagem-api>
+(venv) PS C:\Users\Aluno\Desktop\estudio-tatuagem-api>
 ```
 
 ### Por que o venv não vai pro GitHub?
 
 Repare que já existe um arquivo `.gitignore` na pasta do projeto.
-Ele diz ao Git para ignorar a pasta `venv/` — e está certo.
+Ele diz ao Git para ignorar a pasta `backend/venv/` — e está certo.
 
-A pasta `venv` tem centenas de arquivos e pesa muito. Não faz sentido mandar pro GitHub porque qualquer pessoa pode recriar o venv com um único comando (você vai ver isso a seguir).
+A pasta `venv` tem centenas de arquivos e pesa muito. Não faz sentido mandar pro GitHub porque qualquer pessoa pode recriar o venv com um único comando.
 
 ---
 
@@ -102,20 +102,19 @@ A pasta `venv` tem centenas de arquivos e pesa muito. Não faz sentido mandar pr
 
 Com o venv ativado, execute:
 
-```bash
+```powershell
 pip install fastapi uvicorn mysql-connector-python python-dotenv
 ```
 
 ### Salvando as dependências
 
-O arquivo `requirements.txt` lista tudo que o projeto precisa.
-Assim, qualquer pessoa pode instalar tudo com um único comando.
+O arquivo `requirements.txt` fica dentro de `backend/` e lista tudo que o projeto precisa.
 
-```bash
-pip freeze > requirements.txt
+```powershell
+pip freeze > backend\requirements.txt
 ```
 
-> **Como usar depois:** quem clonar o projeto roda `pip install -r requirements.txt` e já tem tudo instalado — sem precisar lembrar o nome de cada biblioteca.
+> **Como usar depois:** quem clonar o projeto roda `pip install -r backend\requirements.txt` e já tem tudo instalado.
 
 ---
 
@@ -123,8 +122,8 @@ pip freeze > requirements.txt
 
 Agora vamos registrar a instalação no histórico do projeto.
 
-```bash
-git add requirements.txt
+```powershell
+git add backend\requirements.txt
 git commit -m "adiciona dependências do projeto"
 git push
 ```
@@ -139,12 +138,91 @@ git push
 
 ```
 estudio-tatuagem-api/
-├── aulas/                  ← material das aulas
-├── venv/                   ← ambiente virtual (não vai pro GitHub)
-├── .gitignore              ← diz ao Git o que ignorar
-├── requirements.txt        ← bibliotecas instaladas
-└── REGRAS.md               ← regras de código do projeto
+├── aulas/                      ← material das aulas
+├── backend/
+│   ├── venv/                   ← ambiente virtual (não vai pro GitHub)
+│   └── requirements.txt        ← bibliotecas instaladas
+├── frontend/
+├── .gitignore                  ← diz ao Git o que ignorar
+└── REGRAS.md                   ← regras de código do projeto
 ```
+
+---
+
+## Se der erro — resolução de problemas
+
+### Erro ao instalar as bibliotecas (pydantic-core / Rust not found)
+
+Esse erro acontece quando o Python usado para criar o venv não é o oficial.
+Nessas máquinas o Inkscape instala um Python próprio que aparece primeiro e atrapalha.
+
+**Como resolver:**
+
+1. Apague o venv que foi criado errado:
+```powershell
+Remove-Item -Recurse -Force backend\venv
+```
+
+2. Recrie o venv forçando o Python oficial:
+```powershell
+C:\Python310\python.exe -m venv backend\venv --system-site-packages
+```
+
+3. Ative e instale normalmente:
+```powershell
+.\backend\venv\Scripts\Activate.ps1
+pip install fastapi uvicorn mysql-connector-python python-dotenv
+```
+
+---
+
+### Erro ao ativar o venv (política de execução)
+
+```
+não é possível carregar o arquivo ... Activate.ps1 porque a execução de scripts foi desabilitada
+```
+
+**Como resolver** (fazer só uma vez por máquina):
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+Confirme com `S` e tente ativar de novo.
+
+---
+
+## Toda vez que voltar ao laboratório
+
+As máquinas do laboratório não salvam o que foi feito. Então **a cada aula** você vai precisar repetir esses passos antes de continuar.
+
+### Passo 1 — Clone o repositório de novo
+
+```powershell
+cd Desktop
+git clone https://github.com/usuario/estudio-tatuagem-api.git
+cd estudio-tatuagem-api
+```
+
+> Se a pasta já existir no Desktop do dia anterior, apague e clone de novo — assim você garante que está com a versão mais atualizada.
+
+### Passo 2 — Crie e ative o venv
+
+```powershell
+C:\Python310\python.exe -m venv backend\venv --system-site-packages
+.\backend\venv\Scripts\Activate.ps1
+```
+
+### Passo 3 — Instale as dependências
+
+Toda vez que você cria um venv novo, ele começa vazio — os pacotes instalados antes não existem mais.
+Por isso precisamos reinstalar a cada aula.
+
+```powershell
+pip install -r backend\requirements.txt
+```
+
+Esse comando lê o `requirements.txt` e reinstala tudo de uma vez automaticamente.
+
+Pronto. A partir daqui é só continuar de onde parou.
 
 ---
 
