@@ -50,10 +50,14 @@ O **venv** cria uma "caixinha" separada para cada projeto. As bibliotecas instal
 
 ### Criando o venv
 
+Crie a pasta backend/ na raiz do projeto
+
 O venv fica dentro da pasta `backend/` porque é lá que está o código Python:
 
+Entre cd backend
+
 ```powershell
-C:\Python310\python.exe -m venv backend\venv --system-site-packages
+python -m venv venv
 ```
 
 > O `--system-site-packages` permite que o venv enxergue os pacotes que já estão instalados no Python da máquina. Nessas máquinas do laboratório isso é necessário porque o `pip` do sistema e o `pip` do venv podem não se comunicar corretamente.
