@@ -270,8 +270,8 @@ estudio-tatuagem-api/
 │   ├── database.py       ← conexão com o MySQL
 │   ├── main.py           ← atualizado
 │   └── requirements.txt
-├── frontend/
-│   ├── venv/
+│   ├── venv  
+│
 ├── .gitignore
 └── REGRAS.md
 ```

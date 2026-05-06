@@ -79,6 +79,7 @@ Abra o navegador e acesse:
 
 ```
 http://127.0.0.1:8000
+
 ```
 
 Você vai ver o JSON que a sua API retornou:
@@ -123,8 +124,7 @@ estudio-tatuagem-api/
 ├── aulas/
 ├── backend/
 │   ├── main.py          ← novo
-│   └── requirements.txt
-├── frontend/
+│   └── requirements.txt├── 
 │   ├── venv/
 ├── .gitignore
 └── REGRAS.md

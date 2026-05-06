@@ -2,7 +2,7 @@
 
 ## O que vamos fazer nessa aula
 
-1. Clonar o projeto do GitHub
+1. Clonar o projeto do GitHub (você provavelmente já fez isso)
 2. Criar o ambiente virtual Python (venv)
 3. Instalar o FastAPI e salvar as dependências
 
@@ -50,14 +50,14 @@ O **venv** cria uma "caixinha" separada para cada projeto. As bibliotecas instal
 
 ### Criando o venv
 
-Crie a pasta backend/ na raiz do projeto
+1. Crie a pasta **backend** na raiz do projeto
 
 O venv fica dentro da pasta `backend/` porque é lá que está o código Python:
 Abra o terminal e troque do PowerShell para o Command Prompt
 
-Entre com cd backend
+2. Entre com **cd backend** no terminal
 
-```powershell
+```Terminal:
 python -m venv venv
 ```
 
@@ -75,10 +75,10 @@ Você precisa ativar a caixinha antes de usar. **Faça isso toda vez que for tra
 > ```
 > Depois tente ativar de novo.
 
-Quando ativado, o terminal vai mostrar `(venv)` no início da linha:
+Quando ativado, o terminal vai mostrar `(venv)` no início da linha, algo parecido com o que está aqui em baixo:
 
 ```
-(venv) PS C:\Users\Aluno\Desktop\estudio-tatuagem-api>
+(venv) PS C:\Users\Prof\Documents\projetocombanco\backend>
 ```
 
 ### Por que o venv não vai pro GitHub?
@@ -129,12 +129,14 @@ Agora vamos registrar a instalação no seu repositório
 
 
 ```Command Prompt
-git remote set-url origin "caminho do seu repositorio"
+**Exemplos, não use essas urls, use a do seu repositório**
+git remote set-url origin **https://github.com/projetos-cintia/teste.git**
+git remote set-url origin https://projetos-cintia@github.com/projetos-cintia/teste.git
 git add .
 git commit -m "criando estrutura basica"
 git push
 ```
-no processo vai er que validar suas credenciais
+no processo vai ter que validar suas credenciais
 ---
 
 ## Estrutura do projeto até agora
@@ -145,7 +147,7 @@ estudio-tatuagem-api/
 ├── backend/
 │   ├── venv/                   ← ambiente virtual (não vai pro GitHub)
 │   └── requirements.txt        ← bibliotecas instaladas
-├── frontend/
+├── 
 ├── .gitignore                  ← diz ao Git o que ignorar
 └── REGRAS.md                   ← regras de código do projeto
 ```
