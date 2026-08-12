@@ -123,20 +123,32 @@ pip freeze > requirements.txt
 
 ## Parte 4 — Salvando no GitHub
 
-Agora vamos registrar a instalação no seu repositório
+Agora vamos registrar a instalação no seu repositório.
+
+> Importante: os comandos Git precisam ser executados na pasta raiz do projeto, ou seja, na pasta que contém o arquivo `.git`. No nosso caso, essa pasta é a raiz do repositório, que fica em `projetocombanco/`, não dentro da pasta `backend/`.
 
 `Lembrando que deve criar seu resitório sem o readme`
 
-
-```Command Prompt
-**Exemplos, não use essas urls, use a do seu repositório**
-git remote set-url origin **https://github.com/projetos-cintia/teste.git**
-git remote set-url origin https://projetos-cintia@github.com/projetos-cintia/teste.git
-git add .
+```powershell
+cd ..
+garanta que esteja em C:\projetocombanco
+git status
+git remote set-url origin https://github.com/projetos-cintia/teste.git
+git add -A
 git commit -m "criando estrutura basica"
 git push
 ```
-no processo vai ter que validar suas credenciais
+
+### Por que usar `git add -A`?
+
+O comando `git add .` pode deixar de fora arquivos importantes quando você executa ele dentro de uma subpasta, como `backend/`. Por isso, usar `git add -A` na raiz do projeto garante que tudo que foi alterado ou criado será incluído no commit.
+
+### Antes de dar push
+
+Sempre confira com `git status` se os arquivos novos e alterados aparecem na lista. Se aparecerem como `modified` ou `untracked`, ainda não entraram no commit.
+
+No processo de autenticação, você vai precisar validar suas credenciais do GitHub.
+
 ---
 
 ## Estrutura do projeto até agora
@@ -209,14 +221,25 @@ cd estudio-tatuagem-api
 
 > Se a pasta já existir no Desktop do dia anterior, apague e clone de novo — assim você garante que está com a versão mais atualizada.
 
-### Passo 2 — Crie e ative o venv
+### Passo 2 — Importe o banco de volta no MySQL
+
+Antes de começar a usar o banco na aula, vamos restaurar a estrutura que salvamos na aula anterior.
+
+1. Abra o phpMyAdmin no XAMPP.
+2. Clique na aba **Importar**.
+3. Selecione o arquivo **banco/estudio_tatuagem.sql**.
+4. Clique em **Executar**.
+
+Se tudo der certo, o banco **estudio_tatuagem** volta a aparecer com as tabelas e os dados.
+
+### Passo 3 — Crie e ative o venv
 
 ```powershell
 C:\Python310\python.exe -m venv backend\venv --system-site-packages
 .\backend\venv\Scripts\Activate.ps1
 ```
 
-### Passo 3 — Instale as dependências
+### Passo 4 — Instale as dependências
 
 Toda vez que você cria um venv novo, ele começa vazio — os pacotes instalados antes não existem mais.
 Por isso precisamos reinstalar a cada aula.

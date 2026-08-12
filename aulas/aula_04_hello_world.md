@@ -1,5 +1,23 @@
 # Aula 4 — Primeiro endpoint
 
+## Antes de começar — relembrando o ambiente
+
+Se a máquina foi reiniciada desde a última aula, repita os passos da Aula 3 antes de continuar:
+
+1. **Recrie e ative o ambiente virtual**, dentro da pasta `backend`:
+   ```powershell
+   cd backend
+   python -m venv venv
+   .\venv\Scripts\Activate.ps1
+   ```
+   Se der erro de política de execução ou de `pydantic-core`/Rust, o passo a passo de correção está na Aula 3.
+2. **Reinstale as dependências:**
+   ```powershell
+   pip install -r requirements.txt
+   ```
+
+---
+
 ## O que vamos fazer nessa aula
 
 1. Entender o que é o FastAPI e o uvicorn
@@ -24,6 +42,10 @@ Você sempre usa os dois juntos. O uvicorn abre a porta, o FastAPI atende.
 
 Crie um arquivo chamado `main.py` dentro da pasta `backend/`.
 
+Caso não esteja dentro dessa pasta basta digitar
+
+'''(venv) PS C:\projetocombanco> cd backend'''
+
 ```python
 from fastapi import FastAPI  # importa o FastAPI
 
@@ -44,6 +66,18 @@ def inicio():                # quando alguém acessar "/", essa função vai rod
 | `@app.get("/")` | Diz: "quando alguém fizer um GET no endereço `/`, execute a função abaixo" |
 | `return {...}` | O que a API vai devolver — um JSON |
 
+### O papel do arquivo `main.py`
+
+O arquivo `main.py` é o ponto central da nossa API.
+
+Ele é onde vamos:
+- criar a aplicação FastAPI,
+- registrar as rotas,
+- organizar as funcionalidades da API,
+- e conectar tudo que vamos construir nas próximas aulas.
+
+Pensando no projeto, o `main.py` é como o "coração" da aplicação: ele recebe as requisições e direciona para as partes certas do sistema.
+
 ---
 
 ## Parte 3 — Rodando a API
@@ -51,7 +85,7 @@ def inicio():                # quando alguém acessar "/", essa função vai rod
 Com o venv ativado, entre na pasta `backend` e execute:
 
 ```powershell
-cd backend
+cd backend - ***caso ainda não esteja dentro da pasta***
 uvicorn main:app --reload
 ```
 
@@ -102,6 +136,10 @@ Acesse no navegador:
 http://127.0.0.1:8000/docs
 ```
 
+Você vai ver o Swagger com a interface gráfica, vera nela:
+
+A rota GET, abra clicando na seta para baixo no final no card, clique no botão '''Try it out''' e depois no Botão executar, verá o mesmo resultado
+
 O FastAPI gera automaticamente uma página onde você pode:
 - Ver todos os endpoints da API
 - Testar cada endpoint direto pelo navegador
@@ -122,10 +160,11 @@ No terminal, pressione **CTRL + C**.
 ```
 estudio-tatuagem-api/
 ├── aulas/
+├── banco/
 ├── backend/
 │   ├── main.py          ← novo
-│   └── requirements.txt├── 
-│   ├── venv/
+│   ├── requirements.txt ← novo
+│   └── venv/            ← criado na aula 3
 ├── .gitignore
 └── REGRAS.md
 ```

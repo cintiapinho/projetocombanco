@@ -1,5 +1,25 @@
 # Aula 6 — Frontend de Clientes
 
+## Antes de começar — relembrando o ambiente
+
+Se a máquina foi reiniciada desde a última aula, repita os passos de sempre antes de continuar:
+
+1. **Importe o banco de novo** no phpMyAdmin, aba **Importar**, usando `banco/estudio_tatuagem.sql` (processo completo na Aula 2, Passo 4).
+2. **Recrie e ative o ambiente virtual**, dentro da pasta `backend`:
+   ```powershell
+   cd backend
+   python -m venv venv
+   .\venv\Scripts\Activate.ps1
+   ```
+   Se der erro de política de execução ou de `pydantic-core`/Rust, o passo a passo de correção está na Aula 3.
+3. **Reinstale as dependências e rode a API:**
+   ```powershell
+   pip install -r requirements.txt
+   uvicorn main:app --reload
+   ```
+
+---
+
 ## O que vamos fazer nessa aula
 
 1. Entender o que é CORS e por que ele existe
@@ -56,7 +76,17 @@ def inicio():
     return {"mensagem": "API do estúdio de tatuagem funcionando!"}
 ```
 
-> Em produção, `allow_origins=["*"]` seria substituído pelo endereço real do seu site,
+### O que essa função faz?
+
+A função `app.add_middleware(...)` serve para dizer ao FastAPI: "permita que páginas HTML de outras origens possam chamar esta API".
+
+Em outras palavras, ela abre uma porta de comunicação entre o frontend e o backend.
+
+Sem essa configuração, o navegador pode bloquear a requisição por segurança, mesmo que a API esteja funcionando.
+> Neste projeto escolar, deixamos tudo livre com `allow_origins=["*"]` para facilitar o aprendizado e os testes.
+> Em um projeto de verdade, uma empresa normalmente não deixaria tudo aberto assim.
+> Em geral, ela define apenas os sites autorizados, e pode adicionar regras de segurança como autenticação, login, usuário e senha, e controle de permissões.
+>> Em produção, `allow_origins=["*"]` seria substituído pelo endereço real do seu site,
 > por exemplo: `allow_origins=["https://meusite.com"]`.
 > Para desenvolvimento, `"*"` libera tudo e facilita os testes.
 
@@ -66,7 +96,8 @@ Salve o arquivo — o uvicorn vai reiniciar automaticamente.
 
 ## Parte 3 — Criando o HTML
 
-Crie o arquivo `frontend/clientes.html`.
+Crie o arquivo `frontend/clientes.html`. Não esqueça de sair da pasta backend
+
 
 O HTML cuida apenas da **estrutura da página** — títulos, tabela, formulário.
 A lógica (buscar dados, cadastrar, excluir) vai ficar no arquivo JS separado.
@@ -102,7 +133,7 @@ A lógica (buscar dados, cadastrar, excluir) vai ficar no arquivo JS separado.
       <input type="text" id="uf" class="form-control" placeholder="UF" maxlength="2">
     </div>
     <div class="col-md-2">
-      <button type="submit" class="btn btn-primary w-100">Cadastrar</button>
+      <button id="btn-submit-cliente" type="submit" class="btn btn-primary w-100">Cadastrar</button>
     </div>
   </form>
 
@@ -139,20 +170,35 @@ A lógica (buscar dados, cadastrar, excluir) vai ficar no arquivo JS separado.
 
 Crie o arquivo `frontend/js/clientes.js`. Vamos construir função por função.
 
-### 4.1 — Listar clientes
+### 4.1 — Estrutura inicial do JavaScript
 
 Cole no `js/clientes.js` e salve:
 
 ```javascript
 const API = 'http://127.0.0.1:8000'  // endereço da nossa API
+const formCliente = document.getElementById('form-cliente')
+const botaoSubmit = document.getElementById('btn-submit-cliente')
 
-// Busca todos os clientes e preenche a tabela
+function limparFormulario() {
+  formCliente.reset()
+  delete formCliente.dataset.idCliente
+  botaoSubmit.textContent = 'Cadastrar'
+  botaoSubmit.classList.remove('btn-success')
+  botaoSubmit.classList.add('btn-primary')
+}
+```
+
+### 4.2 — Listar clientes
+
+No código abaixo, dentro da coluna `Ações` de cada linha da tabela, adicione o botão `Editar` e o botão `Excluir`:
+
+```javascript
 async function listarClientes() {
-  const resposta = await fetch(`${API}/clientes`)  // chama GET /clientes
-  const clientes = await resposta.json()           // converte para JSON
+  const resposta = await fetch(`${API}/clientes`)
+  const clientes = await resposta.json()
 
   const corpo = document.getElementById('corpo-tabela')
-  corpo.innerHTML = ''  // limpa a tabela antes de preencher
+  corpo.innerHTML = ''
 
   clientes.forEach(c => {
     corpo.innerHTML += `
@@ -164,63 +210,99 @@ async function listarClientes() {
         <td>${c.cidade ?? '-'}</td>
         <td>${c.uf ?? '-'}</td>
         <td>
+          <button class="btn btn-sm btn-warning me-2" onclick='preencherFormularioEdicao(${JSON.stringify(c)})'>Editar</button>
           <button class="btn btn-sm btn-danger" onclick="deletarCliente(${c.idcliente})">Excluir</button>
         </td>
       </tr>`
   })
 }
 
-listarClientes()  // chama a função quando a página carrega
+listarClientes()
 ```
 
 **Teste:** recarregue o `clientes.html` no navegador. Os clientes do banco devem aparecer na tabela.
 
+Lembrando que para aparecer o `uvicorn main:app --reload` precisa estar rodando no terminal, a API não pode estar parada.
+
+Observe que o botão `Editar` já está dentro do próprio código da função `listarClientes()`, na parte que monta a linha da tabela. Ele chama `preencherFormularioEdicao()` para levar os dados do cliente para o formulário.
+
 ---
 
-### 4.2 — Cadastrar cliente
+### 4.3 — Cadastrar e atualizar clientes
 
 Adicione abaixo no `js/clientes.js`:
 
 ```javascript
-// Envia o formulário e cadastra um novo cliente
-document.getElementById('form-cliente').addEventListener('submit', async (e) => {
-  e.preventDefault()  // impede o formulário de recarregar a página
+formCliente.addEventListener('submit', async (e) => {
+  e.preventDefault()
 
   const cliente = {
-    nome:         document.getElementById('nome').value,
-    cpf:          document.getElementById('cpf').value,
-    telefone:     document.getElementById('telefone').value || null,
-    datacadastro: new Date().toISOString().split('T')[0],  // data de hoje: AAAA-MM-DD
-    cidade:       document.getElementById('cidade').value || null,
-    uf:           document.getElementById('uf').value || null
+    nome: document.getElementById('nome').value,
+    cpf: document.getElementById('cpf').value,
+    telefone: document.getElementById('telefone').value || null,
+    datacadastro: new Date().toISOString().split('T')[0],
+    cidade: document.getElementById('cidade').value || null,
+    uf: document.getElementById('uf').value || null
   }
 
-  await fetch(`${API}/clientes`, {
-    method: 'POST',                               // método POST
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(cliente)                 // converte o objeto para JSON
-  })
+  const idCliente = formCliente.dataset.idCliente
 
-  e.target.reset()   // limpa o formulário
-  listarClientes()   // atualiza a tabela
+  if (idCliente) {
+    await fetch(`${API}/clientes/${idCliente}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(cliente)
+    })
+  } else {
+    await fetch(`${API}/clientes`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(cliente)
+    })
+  }
+
+  limparFormulario()
+  listarClientes()
 })
 ```
 
-**Teste:** preencha o formulário e clique em Cadastrar. O novo cliente deve aparecer na tabela.
+Agora adicione a função para abrir os dados do cliente no formulário:
+
+```javascript
+function preencherFormularioEdicao(cliente) {
+  document.getElementById('nome').value = cliente.nome
+  document.getElementById('cpf').value = cliente.cpf
+  document.getElementById('telefone').value = cliente.telefone || ''
+  document.getElementById('cidade').value = cliente.cidade || ''
+  document.getElementById('uf').value = cliente.uf || ''
+
+  formCliente.dataset.idCliente = cliente.idcliente
+  botaoSubmit.textContent = 'Salvar alteração'
+  botaoSubmit.classList.remove('btn-primary')
+  botaoSubmit.classList.add('btn-success')
+}
+```
+
+**Importante:** o formulário guarda o `id` do cliente em `formCliente.dataset.idCliente`. Quando esse valor existe, o submit faz `PUT`; quando não existe, faz `POST`.
+
+Para que a atualização funcione, o backend também precisa ter a rota `PUT /clientes/{id}` definida em `backend/rotas/clientes.py`.
+
+O botão `Editar` precisa estar dentro do próprio código que monta a linha da tabela e chamar essa função com os dados do cliente, como no exemplo acima.
+
+**Teste:** preencha o formulário e clique em Cadastrar. O novo cliente deve aparecer na tabela. Depois clique em Editar em um cliente existente, altere os dados e clique em Salvar alteração. O cliente deve ser atualizado na tela.
 
 ---
 
-### 4.3 — Excluir cliente
+### 4.4 — Excluir cliente
 
 Adicione abaixo no `js/clientes.js`:
 
 ```javascript
-// Deleta um cliente pelo ID
 async function deletarCliente(id) {
   if (!confirm('Tem certeza que deseja excluir este cliente?')) return
 
   await fetch(`${API}/clientes/${id}`, { method: 'DELETE' })
-  listarClientes()  // atualiza a tabela
+  listarClientes()
 }
 ```
 

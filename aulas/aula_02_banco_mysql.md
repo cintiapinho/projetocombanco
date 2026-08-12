@@ -130,6 +130,31 @@ Clique em qualquer tabela → aba **Visualizar** para conferir os dados.
 
 ---
 
+## Passo 4 — Salvar o banco como backup
+
+Como os computadores da escola são congelados, o banco criado hoje pode desaparecer quando a máquina for reiniciada ou quando a aula terminar.
+
+Por isso, vamos salvar uma cópia do banco em um arquivo SQL dentro da pasta **banco/** do projeto.
+
+### Como fazer
+
+1. No phpMyAdmin, Selecione o banco **estudio_tatuagem**. 
+2. clique na aba **Exportar**.
+3. Escolha o Método de exportação  **Personalizada**
+4. Escolha o formato **SQL**.
+5. Cofirme se todas as tabelas estão selecionas
+6. Adicione a instrução: **Adicionar comando CREATE DATABASE / USE**
+7. Clique em **Exportar** para baixar o arquivo.
+8. Salve o arquivo dentro da pasta **banco/** com o nome **estudio_tatuagem.sql**.
+
+### Por que isso é importante?
+
+Esse arquivo será nosso "backup" do banco. Na próxima aula, ou em qualquer outra aula que usar o banco, vamos importar esse arquivo de volta no MySQL.
+
+> Se o banco for alterado nas próximas aulas, vale a pena exportar de novo e substituir o arquivo anterior, para manter tudo atualizado.
+
+---
+
 ## Próxima aula
 
 Na **Aula 3** vamos instalar o Python e o FastAPI para começar a criar a API.
