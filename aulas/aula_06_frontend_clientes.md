@@ -5,14 +5,22 @@
 Se a máquina foi reiniciada desde a última aula, repita os passos de sempre antes de continuar:
 
 1. **Importe o banco de novo** no phpMyAdmin, aba **Importar**, usando `banco/estudio_tatuagem.sql` (processo completo na Aula 2, Passo 4).
-2. **Recrie e ative o ambiente virtual**, dentro da pasta `backend`:
+2. **Recrie o arquivo `.env`** dentro da pasta `backend` — ele também não vai pro GitHub, então some toda vez que a máquina é reiniciada:
+   ```
+   DB_HOST=localhost
+   DB_USER=root
+   DB_PASSWORD=
+   DB_NAME=estudio_tatuagem
+   ```
+   Detalhes desse arquivo na Aula 5, Parte 1.
+3. **Recrie e ative o ambiente virtual**, dentro da pasta `backend`:
    ```powershell
    cd backend
    python -m venv venv
    .\venv\Scripts\Activate.ps1
    ```
    Se der erro de política de execução ou de `pydantic-core`/Rust, o passo a passo de correção está na Aula 3.
-3. **Reinstale as dependências e rode a API:**
+4. **Reinstale as dependências e rode a API:**
    ```powershell
    pip install -r requirements.txt
    uvicorn main:app --reload

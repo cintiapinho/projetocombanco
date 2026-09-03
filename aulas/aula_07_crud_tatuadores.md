@@ -6,24 +6,33 @@ Se você está numa máquina do laboratório que foi reiniciada (ou é um dia no
 
 1. **Importe o banco de novo.** Abra o phpMyAdmin, aba **Importar**, selecione `banco/estudio_tatuagem.sql` e clique em **Executar** (processo completo na Aula 2, Passo 4).
 
-2. **Recrie o ambiente virtual**, dentro da pasta `backend` (se a pasta `venv` já existir, pule esse passo e vá direto pra ativação):
+2. **Recrie o arquivo `.env`** dentro da pasta `backend` — ele também não vai pro GitHub, então some toda vez que a máquina é reiniciada:
+   ```
+   DB_HOST=localhost
+   DB_USER=root
+   DB_PASSWORD=
+   DB_NAME=estudio_tatuagem
+   ```
+   Detalhes desse arquivo na Aula 5, Parte 1.
+
+3. **Recrie o ambiente virtual**, dentro da pasta `backend` (se a pasta `venv` já existir, pule esse passo e vá direto pra ativação):
    ```powershell
    cd backend
    python -m venv venv
    ```
 
-3. **Ative o ambiente virtual:**
+4. **Ative o ambiente virtual:**
    ```powershell
    .\venv\Scripts\Activate.ps1
    ```
    Se aparecer erro de política de execução, ou o erro de `pydantic-core`/Rust ao instalar, o passo a passo completo de correção está na Aula 3, seção "Se der erro — resolução de problemas".
 
-4. **Reinstale as dependências** (o venv novo começa vazio):
+5. **Reinstale as dependências** (o venv novo começa vazio):
    ```powershell
    pip install -r requirements.txt
    ```
 
-5. **Rode a API:**
+6. **Rode a API:**
    ```powershell
    uvicorn main:app --reload
    ```
