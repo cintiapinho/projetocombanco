@@ -42,6 +42,10 @@ Siga as aulas **nessa ordem, sem pular etapas** — cada uma depende do que foi 
 7. [Aula 7 — CRUD de Senioridade e Tatuadores](aulas/aula_07_crud_tatuadores.md)
 8. [Aula 8 — CRUD de Agendamentos](aulas/aula_08_crud_agendamentos.md)
 9. [Aula 9 — Upload de Imagem](aulas/aula_09_upload_imagem.md)
+10. [Aula 10 — Estilos e Relacionamento N:N com Tatuadores](aulas/aula_10_estilos_relacionamento.md)
+11. [Aula 11 — Organizando as Rotas da API](aulas/aula_11_organizando_rotas.md)
+12. [Aula 12 — Landing Page e Cadastro de Usuário](aulas/aula_12_landing_e_cadastro.md)
+13. [Aula 13 — Login com Token JWT](aulas/aula_13_login_jwt.md)
 
 Mais aulas serão adicionadas conforme o curso avança — a lista completa e atualizada está em [REGRAS.md](REGRAS.md), na seção "Ordem de desenvolvimento".
 

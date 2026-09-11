@@ -155,4 +155,9 @@ Vamos construir na seguinte ordem (não pular etapas!):
 - [ ] Aula 7 — CRUD de Senioridade e Tatuadores (chave estrangeira, JOIN)
 - [ ] Aula 8 — CRUD de Agendamentos (duas chaves estrangeiras, data e hora)
 - [ ] Aula 9 — Upload de Imagem (desenho aprovado)
-- [ ] Aula 10 — Login e Dashboard (unindo as telas construídas até aqui) — *a definir*
+- [ ] Aula 10 — Estilos e Relacionamento N:N com Tatuadores
+- [ ] Aula 11 — Organizando as rotas da API (tags e prefixos no `/docs`)
+- [ ] Aula 12 — Landing Page e Cadastro de Usuário (hash de senha)
+- [ ] Aula 13 — Login com Token JWT
+- [ ] Aula 14 — Protegendo as Rotas da API (autenticação obrigatória)
+- [ ] Aula 15 — Tela de Login, Dashboard e Logout — *a definir*
