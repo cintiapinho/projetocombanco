@@ -100,6 +100,8 @@ Também vale adicionar `backend/uploads/` no `.gitignore` — são arquivos de t
 
 Antes de mexer no código, instale uma biblioteca nova. O FastAPI usa `UploadFile`/`File` pra entender upload de arquivo, mas isso depende de outro pacote por baixo dos panos:
 
+Caso o projeto esteja rodando, aperte o Ctrl C para parar o projeto e conseguir digitar isso no terminal
+
 ```powershell
 pip install python-multipart
 ```
